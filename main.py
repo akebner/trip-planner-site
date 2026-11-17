@@ -2,6 +2,17 @@ from drafter import *
 from dataclasses import dataclass
 from bakery import assert_equal
 
+set_website_title("Travel Planner")
+set_site_information(
+    author="Alyssa Ebner",
+    description="Plan a trip on a budget.",
+    sources="Thanks to the Drafter docs and an LLM.",
+    planning=["Copy of CS1 Final Project 1_ Design (1) (1).docx", "LLM Conversation (1).pdf", "Copy of CS1 Final Project 0_ Pick a Problem (1).docx"],
+    links=["https://github.com/akebner/trip-planner-site"]
+)
+hide_debug_information()
+set_website_framed(False)
+
 @dataclass
 class Expense:
     category: str
