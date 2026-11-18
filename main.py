@@ -2,6 +2,9 @@ from drafter import *
 from dataclasses import dataclass
 from bakery import assert_equal
 
+set_website_style("daub")
+
+
 set_website_title("Travel Planner")
 set_site_information(
     author="Alyssa Ebner",
@@ -38,7 +41,7 @@ def index(state: State) -> Page:
     This function cannot be unit tested
     '''
     return Page(state, [
-        "Welcome to your trip budget planner!\n",
+        Text("Welcome to your trip budget planner!\n", style_font_size="40px"),
         Button("Set Budget", "set_budget"),
     ])
 
@@ -51,14 +54,12 @@ def set_budget(state: State) -> Page:
     This function cannot be unit tested
     '''
     return Page(state, [
-        "Set Your Budget!\n",
+        Text("Set Your Budget!\n", style_font_size="40px"),
         "What is your budget?",
         TextBox("budget_input", ""),
         "\nHow many days would you like to stay?",
         TextBox("days", ""),
-        #"What is your location?",
-        #TextBox("location_input", "")
-        Button("Next Page", "save_budget"),
+        Button("Next Page", "save_budget", style_margin="15px"),
     ])
 
 @route
@@ -90,15 +91,15 @@ def summary(state: State) -> Page:
             if expense.category == "Activity":
                 state.activities_cost = expense.cost
     return Page(state, [
-        "Summary Page\n",
+        Text("Summary Page\n", style_font_size="40px"),
         "Budget: $" + str(state.budget)+"\n",
         "Remaining Budget: $" + str(state.budget_remaining)+"\n",
         "Duration: " + str(state.stay_duration)+" days\n",
-        "Expenses:\n",
+        bold(underline("Expenses:\n")),
         "Hotel: $"+str(state.hotel_cost)+"\n",
         "Meals: $"+str(state.meals_cost)+"\n",
         "Activities: $"+str(state.activities_cost)+"\n",
-        Button("Add Expenses", "choose_expense"),
+        Button("Add Expenses", "choose_expense", style_margin="15px"),
     ])
 
 @route
@@ -108,10 +109,10 @@ def choose_expense(state: State) -> Page:
     This function cannot be unit tested
     '''
     return Page(state, [
-        "Expenses Page\n",
+        Text("Expenses Page\n", style_font_size="40px"),
         "Category:",
         SelectBox("category",["Hotel", "Meal Plan", "Activity"], "Hotel"),
-        Button("Next", "choose_option"),
+        Button("Next", "choose_option", style_margin="15px"),
     ])
 
 @route
@@ -136,9 +137,9 @@ def hotels_page(state: State) -> Page:
     This function cannot be unit tested
     '''
     return Page(state, [
-        "Hotel Options:\n",
+        Text("Hotel Options:\n", style_font_size="40px"),
         SelectBox("option",["Hostel ($80)", "Midscale ($120)", "Luxury ($300)"], "Hostel ($80)"),
-        Button("Add Expense", "save_expense"),
+        Button("Add Expense", "save_expense", style_margin="15px"),
     ])
 
 @route
@@ -148,9 +149,9 @@ def meals_page(state: State) -> Page:
     This function cannot be unit tested
     '''
     return Page(state, [
-        "Meal Options:\n",
+        Text("Meal Options:\n", style_font_size="40px"),
         SelectBox("option",["2 Meals a day ($25)", "3 Meals a day ($45)", "Unlimited meals ($100)"], "2 Meals a day ($25)"),
-        Button("Add Expense", "save_expense"),
+        Button("Add Expense", "save_expense", style_margin="15px"),
     ])
 
 @route
@@ -160,9 +161,9 @@ def activity_page(state: State) -> Page:
     This function cannot be unit tested
     '''
     return Page(state, [
-        "Activity Options:\n",
+        Text("Activity Options:\n", style_font_size="40px"),
         SelectBox("option",["Walking Tour ($20)", "Museum Pass ($30)", "Bus Tour ($40)"], "Walking Tour ($20)"),
-        Button("Add Expense", "save_expense"),
+        Button("Add Expense", "save_expense", style_margin="15px"),
     ])
 
 def loop_expenses(state: State, category: str) -> None:
@@ -237,9 +238,9 @@ def over_budget(state: State) -> Page:
     This function cannot be unit tested
     '''
     return Page(state, [
-        "You're Over Budget!\n",
-        Button("Back to Summary Page", "remove_expense"),
-        Button("Reset Budget", "reset_budget"),
+        bold(change_color(Text("You're Over Budget!\n", style_font_size="40px"), "crimson")),
+        Button("Back to Summary Page", "remove_expense", style_margin="15px"),
+        Button("Reset Budget", "reset_budget", style_margin="15px"),
     ])
 
 @route
@@ -443,4 +444,4 @@ assert_equal(state4.expenses, [])
         
 
 
-start_server(State(None, None, "", [], 0, 0, 0, 0))
+start_server(State(0, 0, "", [], 0, 0, 0, 0))
